@@ -181,7 +181,60 @@ class Game():
                                 player = player
                 pygame.display.update()
                 self.clock.tick(FRAMERATE)
-        
+                
+        if set_mode == 'vs_computer':
+            i = 0
+            player = 1
+            column = 0
+            self.winner = ""
+            while True:
+                self.display_surface.fill(BG_COLOR)
+                self.draw_board()
+                self.draw_coin()
+                if self.has_winner():
+                    if player == 1:
+                        self.winner = "computer"
+                        break
+                    elif player == -1:
+                        self.winner = "player 1"
+                        break
+                if player == 1:
+                    self.display_surface.blit(self.p1.coin.render(), COLUMNS_CHOICE[i])
+                elif player == -1:
+                    self.display_surface.blit(self.p2.coin.render(), COLUMNS_CHOICE[i])
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    
+                    if player == 1:
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_LEFT:
+                                if i == 0:
+                                    i = 7
+                                i -= 1
+                            elif event.key == pygame.K_RIGHT:
+                                if i == 6:
+                                    i = -1
+                                i += 1
+                            if event.key == pygame.K_DOWN:
+                                column = i
+                                if not self.column_is_full(column) and player == 1:
+                                    GAME_BOARD[column].append(player)
+                                    player *= -1
+                                else:
+                                    player = player
+                    elif player == -1:            
+                        if not self.column_is_full(column) and player == -1:
+                            column = random.randint(0, 6)
+                            GAME_BOARD[column].append(player)
+                            player *= -1
+                        else:
+                            player = player
+                            
+                pygame.display.update()
+                self.clock.tick(FRAMERATE)            
+            
     def winner_screen(self):
         while True:
             winner_text = Text(CELL_WIDTH * 5, CELL_HEIGHT * 1, "deepskyblue4", "", "white", "Impact", 36)
@@ -190,6 +243,9 @@ class Game():
                 self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 3, CELL_HEIGHT * 1))
             elif self.winner == "player 2":
                 winner_text.text = "Player 2 won!"
+                self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 3, CELL_HEIGHT * 1))
+            elif self.winner == "computer":
+                winner_text.text = "Computer won!"
                 self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 3, CELL_HEIGHT * 1))
                 
             for event in pygame.event.get():

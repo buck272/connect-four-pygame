@@ -1,6 +1,7 @@
 import pygame
 import sys
 import numpy as np
+import random
 
 # set default display screen dimensions
 WINDOW_HEIGHT = 576
