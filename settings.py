@@ -32,5 +32,45 @@ COIN_COLOR_ONE = 'red'
 COIN_COLOR_TWO = 'yellow'
 
 # set default background color
-BG_COLOR = 'gray'
+BG_COLOR = 'deepskyblue3'
 
+# usefull objects
+class Button(object):
+    def __init__(self, width, height, btn_color, text, text_color, font, font_size):
+        self.width = width
+        self.height = height
+        self.btn_color = btn_color
+        self.text = text
+        self.text_color = text_color
+        self.font = font
+        self.font_size = font_size   
+         
+    def render(self):  
+        button_block = pygame.Surface((self.width, self.height))  
+        button_block.fill(self.btn_color)
+        font_to_use = pygame.font.SysFont(self.font, self.font_size)
+        text_to_render = font_to_use.render(self.text, True, self.text_color)
+        text_surface = text_to_render.get_rect()
+        text_surface.center = (self.width / 2, self.height / 2)
+        button_block.blit(text_to_render, text_surface)
+        return button_block
+
+class Text(object):
+    def __init__(self, width, height, box_color, text, text_color, font, font_size):
+        self.width = width
+        self.height = height
+        self.box_color = box_color
+        self.text = text
+        self.text_color = text_color
+        self.font = font
+        self.font_size = font_size
+        
+    def render(self):
+        text_block = pygame.Surface((self.width, self.height))
+        text_block.fill(self.box_color)
+        font = pygame.font.SysFont(self.font, self.font_size)
+        text = font.render(self.text, True, self.text_color)
+        text_surface = text.get_rect()
+        text_surface.center = (self.width / 2, self.height / 2)
+        text_block.blit(text, text_surface)
+        return text_block

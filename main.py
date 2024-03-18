@@ -10,4 +10,5 @@ if __name__ == '__main__':
     player_one = Player(coin_one)
     player_two = Player(coin_two)
     game = Game(player_one, player_two)
-    game.run()
+    set_mode = game.intro()
+    game.run(set_mode)
