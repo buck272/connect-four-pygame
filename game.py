@@ -42,9 +42,10 @@ class Game():
                 for j in range(len(GAME_BOARD[i])):
                     WINNER_BOARD[i][j] = GAME_BOARD[i][j]
                     
-        sample_1 = [1, 1, 1, 1]
-        sample_2 = [-1, -1, -1, -1]
+        sample_1 = ["1", "1", "1", "1"]
+        sample_2 = ["-1", "-1", "-1", "-1"]
         array = np.array(WINNER_BOARD)
+        list(array[i, 0:4])
         flipped_array = np.fliplr(array)
         has_winner = False
         for i in range(1):
@@ -54,17 +55,13 @@ class Game():
                     has_winner = True
                 elif list(array[i, 0:4]) == sample_2 or list(array[i, 1:5]) == sample_2 or list(array[i, 2:]) == sample_2:
                     has_winner = True
+                    
             # check rows for possible winner
-            flipped_visual_board = []
-            for cell in range(6):
-                row = []
-                for col in WINNER_BOARD:
-                    row.append(col[cell])
-                flipped_visual_board.append(row)
-            for row in flipped_visual_board:
-                if row[0:4] == sample_1 or row[1:5] == sample_1 or row[2:6] == sample_1 or row[3:] == sample_1 or \
-                    row[0:4] == sample_2 or row[1:5] == sample_2 or row[2:6] == sample_2 or row[3:] == sample_2:
+            for i in range(6):
+                if list(array[0:4, i]) == sample_1 or list(array[1:5, i]) == sample_1 or list(array[2:6, i]) == sample_1 or list(array[3:, i]) == sample_1 or \
+                    list(array[0:4, i]) == sample_2 or list(array[1:5, i]) == sample_2 or list(array[2:6, i]) == sample_2 or list(array[3:, i]) == sample_2:
                     has_winner = True
+                    
             # check diagonals for possible winner
             if list(np.diag(array))[0:4] == sample_1 or list(np.diag(array))[1:5] == sample_1 or list(np.diag(array))[2:] == sample_1 or \
                list(np.diag(array, k=1))[0:4] == sample_1 or list(np.diag(array, k=1))[1:5] == sample_1 or list(np.diag(array, k=2)) == sample_1 or \
@@ -147,7 +144,6 @@ class Game():
                 self.display_surface.fill(BG_COLOR)
                 self.draw_board()
                 self.draw_coin()
-                
                 if self.has_winner():
                     if player == 1:
                         self.winner = "player 2"
