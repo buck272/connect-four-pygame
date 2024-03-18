@@ -12,3 +12,4 @@ if __name__ == '__main__':
     game = Game(player_one, player_two)
     set_mode = game.intro()
     game.run(set_mode)
+    game.winner_screen()

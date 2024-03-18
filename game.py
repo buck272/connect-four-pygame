@@ -142,11 +142,19 @@ class Game():
             i = 0
             player = 1
             column = 0
+            self.winner = ""
             while True:
                 self.display_surface.fill(BG_COLOR)
                 self.draw_board()
                 self.draw_coin()
-                self.has_winner()
+                
+                if self.has_winner():
+                    if player == 1:
+                        self.winner = "player 2"
+                        break
+                    elif player == -1:
+                        self.winner = "player 1"
+                        break
                 if player == 1:
                     self.display_surface.blit(self.p1.coin.render(), COLUMNS_CHOICE[i])
                 elif player == -1:
@@ -178,4 +186,21 @@ class Game():
                 pygame.display.update()
                 self.clock.tick(FRAMERATE)
         
-        
+    def winner_screen(self):
+        while True:
+            winner_text = Text(CELL_WIDTH * 5, CELL_HEIGHT * 1, "deepskyblue4", "", "white", "Impact", 36)
+            if self.winner == "player 1":
+                winner_text.text = "Player 1 won!"
+                self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 3, CELL_HEIGHT * 1))
+            elif self.winner == "player 2":
+                winner_text.text = "Player 2 won!"
+                self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 3, CELL_HEIGHT * 1))
+                
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+            pygame.display.update()
+            self.clock.tick(FRAMERATE)
+                    
