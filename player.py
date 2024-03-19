@@ -4,5 +4,3 @@ class Player():
     def __init__(self, coin):
         self.coin = coin
     
-class Computer():
-    pass
