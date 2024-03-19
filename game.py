@@ -219,18 +219,18 @@ class Game():
                                 i += 1
                             if event.key == pygame.K_DOWN:
                                 column = i
-                                if not self.column_is_full(column) and player == 1:
+                                if not self.column_is_full(column) :
                                     GAME_BOARD[column].append(player)
                                     player *= -1
                                 else:
                                     player = player
-                    elif player == -1:            
-                        if not self.column_is_full(column) and player == -1:
-                            column = random.randint(0, 6)
-                            GAME_BOARD[column].append(player)
-                            player *= -1
-                        else:
-                            player = player
+                if player == -1:   
+                    column = random.randint(0, 6)         
+                    if not self.column_is_full(column):
+                        GAME_BOARD[column].append(player)
+                        player *= -1
+                    else:
+                        player = player
                             
                 pygame.display.update()
                 self.clock.tick(FRAMERATE)            
