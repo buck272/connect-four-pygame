@@ -139,19 +139,20 @@ class Game():
                     
             pygame.display.update()
             self.clock.tick(FRAMERATE)
-    
+            
     def run(self):
         # mode set to 2 players
         if self.set_mode == 'vs_player':
             i = 0
             player = 1
             column = 0
-            while True:
+            mode_running = True
+            while mode_running:
                 self.display_surface.fill(BG_COLOR)
                 self.draw_board()
                 self.draw_coin()
                 if self.has_winner():
-                    break
+                    mode_running = False
                 if player == 1:
                     self.display_surface.blit(self.p1.coin.render(), COLUMNS_CHOICE[i])
                 elif player == -1:
@@ -187,11 +188,13 @@ class Game():
             i = 0
             player = 1
             column = 0
-            while True:
+            mode_running = True
+            while mode_running:
                 self.display_surface.fill(BG_COLOR)
                 self.draw_board()
                 self.draw_coin()
                 if self.has_winner():
+                    mode_running = False
                     break
                 if player == 1:
                     self.display_surface.blit(self.p1.coin.render(), COLUMNS_CHOICE[i])
@@ -231,9 +234,8 @@ class Game():
                 self.clock.tick(FRAMERATE)            
             
     def winner_screen(self):
-        restart = False
-        winner_screen = True
-        while winner_screen:
+        winner_running = True
+        while winner_running:
             winner_text = Text(CELL_WIDTH * 5, CELL_HEIGHT * 1, "deepskyblue4", "", "white", "Impact", 36)
             if self.winner == "player 1":
                 winner_text.text = "Player 1 won!"
@@ -244,27 +246,28 @@ class Game():
             elif self.winner == "player 2" and self.set_mode == "vs_computer":
                 winner_text.text = "Computer won!"
                 self.display_surface.blit(winner_text.render(), (CELL_WIDTH * 2, CELL_HEIGHT * 1))
-            
-            restart_button = Button(CELL_WIDTH * 2, CELL_HEIGHT, "deepskyblue1", "Restart", "white", "Impact", 24)
-            self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))    
-            
-            x, y = pygame.mouse.get_pos()
-            if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
-                restart_button.btn_color = "green3"
-                self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))
-            
+                
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+            
+        #   restart_button = Button(CELL_WIDTH * 2, CELL_HEIGHT, "deepskyblue1", "Restart", "white", "Impact", 24)
+        #   self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))    
+        #   
+        #   x, y = pygame.mouse.get_pos()
+        #   if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
+        #       restart_button.btn_color = "green3"
+        #       self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))
 
-            if pygame.mouse.get_pressed()[0]:
-                x, y = pygame.mouse.get_pos()
-                if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
-                    restart = True
-                    winner_screen = False
+        #   if pygame.mouse.get_pressed()[0]:
+        #       x, y = pygame.mouse.get_pos()
+        #       if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
+        #           restart = True
+        #           self.display_surface.fill(BG_COLOR)
+        #           winner_running = False
 
             pygame.display.update()
             self.clock.tick(FRAMERATE)
-        return restart
+        #return restart
                     

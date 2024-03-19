@@ -75,15 +75,3 @@ class Text(object):
         text_surface.center = (self.width / 2, self.height / 2)
         text_block.blit(text, text_surface)
         return text_block
-    
-def reset():
-    # set columns choice section default coordinates
-    COLUMNS_CHOICE = []
-    for i in range(2, 9):
-        COLUMNS_CHOICE.append((CELL_WIDTH * i, CELL_HEIGHT))
-
-    # set default board
-    GAME_BOARD = [[] for i in range(7)]
-
-    # set default check for winner board
-    WINNER_BOARD = [[" " for i in range(6)] for i in range(7)]
