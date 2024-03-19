@@ -14,6 +14,8 @@ if __name__ == '__main__':
     game = Game(player_one, player_two)
     
     # running the game
-    game.intro()
-    game.run()
-    game.winner_screen()
+    while True:
+        game.intro()
+        game.run()
+        game.winner_screen()
+        

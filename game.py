@@ -13,7 +13,7 @@ class Game():
         self.window_label = pygame.display.set_caption('CONNECT FOUR!')
         self.window_icon = pygame.display.set_icon(ICON_IMAGE)
         self.clock = pygame.time.Clock()
-        
+    
     def draw_board(self):        
         pygame.draw.rect(self.display_surface, color="blue3", rect=(CELL_WIDTH * 2, CELL_HEIGHT * 2, CELL_WIDTH * 7, CELL_HEIGHT * 6))
         circle_surface = pygame.Surface((CELL_WIDTH, CELL_HEIGHT))
@@ -252,22 +252,22 @@ class Game():
                     pygame.quit()
                     sys.exit()
             
-        #   restart_button = Button(CELL_WIDTH * 2, CELL_HEIGHT, "deepskyblue1", "Restart", "white", "Impact", 24)
-        #   self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))    
-        #   
-        #   x, y = pygame.mouse.get_pos()
-        #   if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
-        #       restart_button.btn_color = "green3"
-        #       self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))
+            restart_button = Button(CELL_WIDTH * 2, CELL_HEIGHT, "deepskyblue1", "Restart", "white", "Impact", 24)
+            self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))    
+            
+            x, y = pygame.mouse.get_pos()
+            if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
+                restart_button.btn_color = "green3"
+                self.display_surface.blit(restart_button.render(), (CELL_WIDTH * 7, CELL_HEIGHT))
 
-        #   if pygame.mouse.get_pressed()[0]:
-        #       x, y = pygame.mouse.get_pos()
-        #       if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
-        #           restart = True
-        #           self.display_surface.fill(BG_COLOR)
-        #           winner_running = False
-
+            if pygame.mouse.get_pressed()[0]:
+                x, y = pygame.mouse.get_pos()
+                if (x >= CELL_WIDTH * 7 and x <= CELL_WIDTH *9) and (y >= CELL_HEIGHT and y <= CELL_HEIGHT * 2):
+                    restart = True
+                    self.display_surface.fill(BG_COLOR)
+                    winner_running = False
+                    
             pygame.display.update()
             self.clock.tick(FRAMERATE)
-        #return restart
+        return restart
                     
