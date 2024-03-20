@@ -10,43 +10,56 @@ class Game():
         self.set_mode = ''
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.display_surface.fill(BG_COLOR)
+        self.board_surface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.board_surface.set_colorkey((0, 0, 0))
         self.window_label = pygame.display.set_caption('CONNECT FOUR!')
         self.window_icon = pygame.display.set_icon(ICON_IMAGE)
         self.clock = pygame.time.Clock()
+        
+        # set default board
+        self.game_board = [[] for i in range(7)]
+        # set default check for winner board
+        self.winner_board = [[" " for i in range(6)] for i in range(7)]
+    
+    def reset(self):
+        self.game_board = [[] for i in range(7)]
+        self.winner_board = [[" " for i in range(6)] for i in range(7)]
     
     def draw_board(self):        
-        pygame.draw.rect(self.display_surface, color="blue3", rect=(CELL_WIDTH * 2, CELL_HEIGHT * 2, CELL_WIDTH * 7, CELL_HEIGHT * 6))
+        pygame.draw.rect(self.board_surface, color="blue3", rect=(CELL_WIDTH * 2, CELL_HEIGHT * 2, CELL_WIDTH * 7, CELL_HEIGHT * 6))
         circle_surface = pygame.Surface((CELL_WIDTH, CELL_HEIGHT))
         circle_surface.set_colorkey((0, 0, 0))
         pygame.draw.circle(circle_surface, color=BG_COLOR, center=(CELL_WIDTH / 2, CELL_HEIGHT / 2), radius=20)
         for i in range(len(COORDINATES)):
             for j in range(len(COORDINATES[i])):
-                self.display_surface.blit(circle_surface, COORDINATES[i][j])
+                self.board_surface.blit(circle_surface, COORDINATES[i][j])
+        self.display_surface.blit(self.board_surface, (0, 0))
     
     def draw_coin(self):
-        for i in range(len(GAME_BOARD)):
-            if len(GAME_BOARD[i]) > 0:
-                for j in range(len(GAME_BOARD[i])):
-                    if GAME_BOARD[i][j] == 1:
-                        self.display_surface.blit(self.p1.coin.render(), COORDINATES[i][j])
-                    elif GAME_BOARD[i][j] == -1:
-                        self.display_surface.blit(self.p2.coin.render(), COORDINATES[i][j])
+        for i in range(len(self.game_board)):
+            if len(self.game_board[i]) > 0:
+                for j in range(len(self.game_board[i])):
+                    if self.game_board[i][j] == 1:
+                        self.board_surface.blit(self.p1.coin.render(), COORDINATES[i][j])
+                    elif self.game_board[i][j] == -1:
+                        self.board_surface.blit(self.p2.coin.render(), COORDINATES[i][j])
+        self.display_surface.blit(self.board_surface, (0, 0))
     
     def column_is_full(self, chosen_column):
-        if len(GAME_BOARD[chosen_column]) == 6:
+        if len(self.game_board[chosen_column]) == 6:
             return True
         else:
             return False
     
     def has_winner(self):
-        for i in range(len(GAME_BOARD)):
-            if len(GAME_BOARD[i]) > 0:
-                for j in range(len(GAME_BOARD[i])):
-                    WINNER_BOARD[i][j] = GAME_BOARD[i][j]
+        for i in range(len(self.game_board)):
+            if len(self.game_board[i]) > 0:
+                for j in range(len(self.game_board[i])):
+                    self.winner_board[i][j] = self.game_board[i][j]
                     
         sample_1 = ["1", "1", "1", "1"]
         sample_2 = ["-1", "-1", "-1", "-1"]
-        array = np.array(WINNER_BOARD)
+        array = np.array(self.winner_board)
         list(array[i, 0:4])
         flipped_array = np.fliplr(array)
         has_winner = False
@@ -96,6 +109,7 @@ class Game():
         intro = True
         while intro:
             # intro text object
+            self.display_surface.fill(BG_COLOR)
             intro_text = Text(CELL_WIDTH * 9, CELL_HEIGHT * 2, BG_COLOR, "CONNECT FOUR!", "black", "Prequel Demo Shadow Italic", 62)
             self.display_surface.blit(intro_text.render(), (CELL_WIDTH, CELL_HEIGHT))
             
@@ -141,7 +155,7 @@ class Game():
             self.clock.tick(FRAMERATE)
             
     def run(self):
-        # mode set to 2 players
+        print(self.game_board)
         if self.set_mode == 'vs_player':
             i = 0
             player = 1
@@ -174,10 +188,10 @@ class Game():
                         if event.key == pygame.K_DOWN:
                             column = i
                             if not self.column_is_full(column) and player == 1:
-                                GAME_BOARD[column].append(player)
+                                self.game_board[column].append(player)
                                 player *= -1
                             elif not self.column_is_full(column) and player == -1:
-                                GAME_BOARD[column].append(player)
+                                self.game_board[column].append(player)
                                 player *= -1
                             else:
                                 player = player
@@ -218,18 +232,17 @@ class Game():
                             if event.key == pygame.K_DOWN:
                                 column = i
                                 if not self.column_is_full(column) :
-                                    GAME_BOARD[column].append(player)
+                                    self.game_board[column].append(player)
                                     player *= -1
                                 else:
                                     player = player
                 if player == -1:   
                     column = random.randint(0, 6)         
                     if not self.column_is_full(column):
-                        GAME_BOARD[column].append(player)
+                        self.game_board[column].append(player)
                         player *= -1
                     else:
-                        player = player
-                            
+                        player = player 
                 pygame.display.update()
                 self.clock.tick(FRAMERATE)            
             
@@ -266,8 +279,10 @@ class Game():
                     restart = True
                     self.display_surface.fill(BG_COLOR)
                     winner_running = False
+                    self.reset()
                     
             pygame.display.update()
             self.clock.tick(FRAMERATE)
         return restart
+    
                     
